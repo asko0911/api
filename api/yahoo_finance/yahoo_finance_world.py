@@ -6,11 +6,10 @@ import matplotlib.pyplot as plt
 import datetime as dt
 from yahoo_finance_api2 import share
 from yahoo_finance_api2.exceptions import YahooFinanceError
-from search_code import total_code_list, total_company_list
+from search_symbol import total_code_list, total_company_list, total_country_list
 
-def main(code, company):
-    code = str(code)
-    my_share = share.Share(code + '.T')
+def main(code, company, country):
+    my_share = share.Share(code)
     symbol_data = None
 
     try:
@@ -30,18 +29,18 @@ def main(code, company):
     before_covid19 = round(before_covid19.close.mean())
     ratio = round(after_covid19 / before_covid19, 2)
 
-    print("code: {}. company: {}".format(code, company))
+    print("code: {}. company: {}. country: {}".format(code, company, country))
     print(before_covid19, after_covid19, ratio)
-    stock_df.loc[i] = [code, company, before_covid19, after_covid19, ratio]
+    stock_df.loc[i] = [code, company, country, before_covid19, after_covid19, ratio]
 
-stock_df = pd.DataFrame(columns=['企業コード', '企業名', 'コロナ前平均', 'コロナ後平均', '成長率'])
+stock_df = pd.DataFrame(columns=['シンボル', '企業名', '国名', 'コロナ前平均', 'コロナ後平均', '成長率'])
 for i in range(len(total_code_list)):
     try:
-        main(total_code_list[i], total_company_list[i])
+        main(total_code_list[i], total_company_list[i], total_country_list[i])
     except Exception as e:
         print(e)
 
-stock_df.to_csv("stock_df.csv", encoding='utf_8_sig', index=False)
+stock_df.to_csv("stock_world.csv", encoding='utf_8_sig', index=False)
 print(stock_df)
 
 

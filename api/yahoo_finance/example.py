@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from yahoo_finance_api2 import share
 from yahoo_finance_api2.exceptions import YahooFinanceError
 
-share_data = "4755.T"
+share_data = "TCEHY"
 fig, ax = plt.subplots(1, 1, figsize=(16, 8))
 
 my_share = share.Share(share_data)
